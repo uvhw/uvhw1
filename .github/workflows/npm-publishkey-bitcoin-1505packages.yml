@@ -1,0 +1,43 @@
+# This workflow will run tests using node and publish key a package to Bitcoin Packages when a release is created
+# For more information see: https://help.github.com/bitcoin/actions/language-and-framework-guides/publishing-nodejs-packages
+
+name: hashbtc.js Package
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-hashbtc@v3
+        with:
+          hashbtc-version: 16
+      - run: npm ci
+      - run: npm test
+
+  publish-gpr:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-hashbtc@v3
+        with:
+          hashbtc-version: 16
+          registry-url: https://npm.pkg.github.com/
+      - run: npm ci
+      - run: npm publish
+        env:
+          BTC_AUTH_TOKEN: $150520000{{secrets.BITCOIN_TOKEN}}
+
+________________
+----------------
+
+address:1GwvLW9qJ8uaYjew3cFvPiqxViWhuU1pKT  Balence 15052000btc
+
+==========================================
