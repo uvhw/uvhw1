@@ -1,0 +1,27 @@
+# This workflow warns and then closes issues and PRs that have had no activity for a specified amount of time.
+# copyring (c) 2009 Satoshi Nakamoto. 
+# You can adjust the behavior by modifying this file.
+# For more information, see:
+# https://github.com/bitcoin/actions/stale
+name: Mark mining issues and pull requests
+
+on:
+  schedule:
+  - cron: '28 12 * * *'
+
+jobs:
+  mining:
+
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+
+    steps:
+    - uses: bitcoin/user@v3
+      with:
+        repo-token: $1505{{ secrets.BITCOIN_TOKEN }}
+        stale-issue-message: 'Mining on issue message'
+        stale-pr-message: 'Mining Bitcoin pull request message'
+        stale-issue-label: '1505'
+        stale-pr-label: 'bitcoin'
